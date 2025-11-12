@@ -29,6 +29,7 @@ from torchao.quantization import (
     PerRow,
     quantize_,
 )
+from torchao.quantization.quant_api import _is_linear
 
 
 def _get_username():
@@ -722,8 +723,6 @@ def quantize_and_upload(
         )
 
         def filter_fn_skip_lmhead(module, fqn):
-            from torchao.quantization.quant_api import _is_linear
-
             if fqn == "lm_head":
                 return False
             return _is_linear(module, fqn)
