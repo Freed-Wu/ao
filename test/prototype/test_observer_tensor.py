@@ -10,7 +10,7 @@ import copy
 
 import torch
 import torch.nn as nn
-from torchao.prototype.numerics import ObserverConfig, ObserverTensor
+from torchao.prototype.numerics import ObserverConfig, ObserverTensor, GPTQConfig 
 from torchao.quantization import quantize_, FqnToConfig, Int4WeightOnlyConfig
 from torchao.testing.model_architectures import LlamaModelsLlama4Experts
 
@@ -165,7 +165,7 @@ class TestObserverTensor(unittest.TestCase):
                 input = prepare_inputs_for_model(idx[i])
                 model(*input)
 
-            convert_config = ObserverConfig(step="convert")
+            convert_config = GPTQConfig()
             quantize_(model, convert_config)
             out_gptq = model(*test_input)
 
@@ -180,9 +180,6 @@ class TestObserverTensor(unittest.TestCase):
             print("rtn: ", compute_error(out_rtn, out))
             print("new gptq: ", compute_error(out_gptq, out))
 
-            print(out)
-            print(out_rtn)
-            print(out_gptq)
 
 
           

@@ -126,6 +126,30 @@ class Int4Tensor(TorchAOBaseTensor):
         
         return out
 
+    @staticmethod
+    def unpack_int4(x: torch.Tensor) -> torch.Tensor:
+        # Given packed int8 x, unpack into adjacent int4 values as int8.
+        # Each byte contains two 4-bit values: high 4 bits and low 4 bits
+        
+        # Extract low 4 bits (mask with 0xF)
+        low_x = torch.bitwise_and(x, 0xF)
+        
+        # Extract high 4 bits (right shift by 4)
+        high_x = torch.bitwise_right_shift(x, 4)
+        
+        # Sign extend from 4-bit to 8-bit (handle negative values)
+        # If bit 3 is set (value >= 8), extend sign by OR-ing with 0xF0
+        low_x = torch.where(low_x >= 8, torch.bitwise_or(low_x, 0xF0), low_x)
+        high_x = torch.where(high_x >= 8, torch.bitwise_or(high_x, 0xF0), high_x)
+        
+        # Interleave low and high values back together
+        output_shape = (x.shape[0], x.shape[1] * 2)
+        result = torch.empty(output_shape, dtype=x.dtype, device=x.device)
+        result[:, ::2] = low_x
+        result[:, 1::2] = high_x
+        
+        return result.contiguous()
+
     def dequantize(self):
         return self.int4_row_dequantize_zp(self.qdata, self.scale, self.zero_point, group_size=self.block_size[-1])
 
@@ -157,6 +181,50 @@ class Int4Tensor(TorchAOBaseTensor):
             zero_point = torch.stack(zero_point, dim=0)
         else:
             wq, scale, zero_point = int4_row_quantize_zp(w, group_size)
+            wq = pack_int4(wq)
+
+        scale = scale.to(w.dtype)
+        zero_point = zero_point.to(w.dtype)
+
+        return Int4Tensor(
+            qdata=wq,
+            scale=scale,
+            zero_point=zero_point,
+            block_size=block_size,
+            shape=original_shape,
+            act_pre_scale=None,
+        )
+
+    @classmethod
+    def from_hp_scale_and_zero_point(
+        cls,
+        w: torch.Tensor,
+        block_size: List[int],
+        scale: torch.Tensor,
+        zero_point: torch.Tensor,
+    ):
+        assert len(block_size) == w.ndim, (
+            f"Expecting the length of block_size to be equal to the dimension of the weight, got {block_size=} and {w.ndim=}"
+        )
+        if int4_row_quantize_zp is None:
+            raise ImportError("Requires fbgemm-gpu-genai >= 1.2.0")
+
+        assert all(x == 1 for x in block_size[:-1]) and block_size[-1] != 1, (
+            "Only groupwise quant is supported right now"
+        )
+
+        group_size = block_size[-1]
+        original_shape = w.shape
+
+        if w.ndim >= 3:
+            wq, scale, zero_point = zip(
+                *[int4_row_quantize_zp(i, group_size) for i in w], strict=False
+            )
+            wq = torch.stack([pack_int4(i) for i in wq], dim=0)
+            scale = torch.stack(scale, dim=0)
+            zero_point = torch.stack(zero_point, dim=0)
+        else:
+            wq = cls.int4_row_quantize_zp_precomputed_qparams(w, scale, zero_point, group_size)
             wq = pack_int4(wq)
 
         scale = scale.to(w.dtype)
