@@ -4,7 +4,7 @@ This page provides an overview of the various workflows available in torchao.
 
 ## Workflow overview by training/QAT/inference
 
-* Training: our main training workflow is [float8 quantized training](training.md). We 
+* Training: our main training workflow is [float8 quantized training](training.md). We
   also have three prototype quantized training workflows: [mxfp8 dense](https://github.com/pytorch/ao/tree/main/torchao/prototype/mx_formats#mx-training),
   [mxfp8 MoE](https://github.com/pytorch/ao/tree/main/torchao/prototype/moe_training#mxfp8-moe-training),
   [int8 dense](https://github.com/pytorch/ao/tree/main/torchao/prototype/quantized_training)

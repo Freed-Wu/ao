@@ -232,7 +232,7 @@ subclass for symmetric quantization:
               dtype=scale.dtype,
               device=int_data.device,
           )
-  
+
       @torch._dynamo.disable
       def __init__(self, int_data: torch.Tensor, scale: torch.Tensor):
           # inner data expected to be quantized already
@@ -242,7 +242,7 @@ subclass for symmetric quantization:
           assert scale.ndim == 2
           self.int_data = int_data
           self.scale = scale
-  
+
       def __tensor_flatten__(self) -> Tuple[List[str], Any]:
           """
           Returns a tuple of:
@@ -252,7 +252,7 @@ subclass for symmetric quantization:
           Needed for PT2 support.
           """
           return ["int_data", "scale"], None
-  
+
       @classmethod
       def __tensor_unflatten__(cls, tensor_data_dict, extra_metadata, outer_size=None, outer_stride=None):
           """
@@ -270,10 +270,10 @@ subclass for symmetric quantization:
           int_data = tensor_data_dict["int_data"]
           scale = tensor_data_dict["scale"]
           return Int8SymmetricTensor(int_data, scale)
-  
+
       def __repr__(self):
           return f'Int8SymmetricTensor(int_data={repr(self.int_data)}, scale={repr(self.scale)})'
-  
+
       @staticmethod
       def from_float(float_tensor):
           """
@@ -289,7 +289,7 @@ subclass for symmetric quantization:
           """
           int8_tensor, scale = int8_symmetric_quantize(float_tensor)
           return Int8SymmetricTensor(int8_tensor, scale)
-  
+
       @classmethod
       def __torch_dispatch__(cls, func, types, args, kwargs):
           """
@@ -301,7 +301,7 @@ subclass for symmetric quantization:
           if func not in op_implementations_dict:
               raise AssertionError(f'Int8SymmetricTensor does not yet support op: {str(func)}')
           return op_implementations_dict[func](func, *args, **kwargs)
-  
+
 
   # Convenience function for registering our own implementation
   # to every ATen operator in PyTorch
@@ -312,7 +312,7 @@ subclass for symmetric quantization:
           for op in ops:
               op_implementations_dict[op] = op_impl
           return op_impl
-  
+
       return impl_decorator
 
 In the above code, we have done a few things:

@@ -99,10 +99,10 @@ loss.backward()
 
 ## Benchmarks
 
-### Autograd function 
+### Autograd function
 Forward + backward pass benchmarks for the [autograd function](https://github.com/pytorch/ao/blob/8bb433e989ad6f7ee0920f946d3a9be7f14be8c7/torchao/prototype/moe_training/scaled_grouped_mm.py#L284) powering MXFP8 MoE training.
 
-#### Llama4 Scout shapes 
+#### Llama4 Scout shapes
 
 * `G` (number of groups/experts per device) varies from 1 to 8 to simulate different degrees of expert parallelism
 

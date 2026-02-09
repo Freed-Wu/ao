@@ -1,7 +1,7 @@
 # MX training and inference with native PyTorch
 
 e2e training and inference with mxfp8, mxfp4, nvfp4 formats from the [MX OCP spec](https://www.opencompute.org/documents/ocp-microscaling-formats-mx-v1-0-spec-final-pdf)
-in native PyTorch.  
+in native PyTorch.
 
 > :warning: We are currently in prototype.  Use nightly versions of PyTorch and torchao (or build from source) for best results.
 
@@ -225,7 +225,7 @@ conda run -n torch python benchmarks/mx_formats/cast_bench.py --M 16384 --K 1638
 
 ## inference
 
-Eval results on LLaMa 3.1 8B on common tasks. `mxfp8` and `nvfp4` recipes quantize all linears except `lm_head`. 
+Eval results on LLaMa 3.1 8B on common tasks. `mxfp8` and `nvfp4` recipes quantize all linears except `lm_head`.
 
 Note: the accuracy results below are WIP and are not optimized yet.
 

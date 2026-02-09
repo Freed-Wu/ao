@@ -23,9 +23,3 @@ The following tests were performed using LM eval and groupsize = 128
 |                    | awq-uint4    | 11.409     | 0.519           | 0.756      | 0.577         |
 |                    | int4wo-hqq   | 11.905     | 0.528           | 0.757      | 0.563         |
 |                    | int4wo-128   | 12.380     | 0.502           | 0.753      | 0.548         |
-
-
-
-
-
-

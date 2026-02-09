@@ -1,3 +1,9 @@
+# Copyright (c) Meta Platforms, Inc. and affiliates.
+# All rights reserved.
+#
+# This source code is licensed under the BSD 3-Clause license found in the
+# LICENSE file in the root directory of this source tree.
+
 """
 Triton utility functions sourced from torchtitan:
 https://github.com/pytorch/torchtitan/blob/3e1b843ecd91a80dbf56e16f2eae7b637209ebcb/torchtitan/experiments/deepseek_v3/symm_mem_recipes/triton_utils.py

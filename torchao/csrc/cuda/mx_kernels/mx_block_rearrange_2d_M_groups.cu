@@ -1,3 +1,9 @@
+// Copyright (c) Meta Platforms, Inc. and affiliates.
+// All rights reserved.
+//
+// This source code is licensed under the BSD 3-Clause license found in the
+// LICENSE file in the root directory of this source tree.
+
 /**
  * MX Block Rearrange 2D Kernel for M-Groups (Groups along row dimension)
  *
@@ -717,7 +723,7 @@ __global__ void mx_blocked_layout_2d_simple_kernel(
 
     // TODO: the efficiency of loads can be improved but the kernel is already several times faster
     // than Triton and we are going to port these to CuteDSL anyway so don't want to sink more time into this.
-    // Problem: this code will often result in single byte loads when stride is not a multiple of 16/8, 
+    // Problem: this code will often result in single byte loads when stride is not a multiple of 16/8,
     // because many reads will not meet alignment requirements for vectorized loads.
     // We also can't use 2d TMA to read 128xCHUNK_SIZE chunks because 2d tma also requires global stride by multiple of 16 bytes.
     if (row_valid) {

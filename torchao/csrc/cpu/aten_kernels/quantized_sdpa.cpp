@@ -878,7 +878,7 @@ inline void _fp8_dequant_quant_fusion_kernel(
   }
 }
 
-// UINT8 - one parallel loop with u8u8s32 GEMM 
+// UINT8 - one parallel loop with u8u8s32 GEMM
 template <typename scalar_t, typename mask_t,
           int64_t q_split_size, int64_t kv_split_size,
           bool use_one_parallel_loop,

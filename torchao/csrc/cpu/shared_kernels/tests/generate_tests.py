@@ -98,7 +98,7 @@ def main():
     kleidi_template = Template(
         """
 /*****************/
-// ${kernel} tests 
+// ${kernel} tests
 /*****************/
 ${prologue}
 ${tests}
