@@ -17,14 +17,14 @@ In this tutorial, we walk through an example of how to achieve this in torchao. 
            super().__init__()
            self.linear1 = torch.nn.Linear(m, k, bias=False)
            self.linear2 = torch.nn.Linear(k, n, bias=False)
-   
+
        def example_inputs(self, batch_size=1, dtype=torch.float32, device="cpu"):
            return (
                torch.randn(
                    batch_size, self.linear1.in_features, dtype=dtype, device=device
                ),
            )
-   
+
        def forward(self, x):
            x = self.linear1(x)
            x = self.linear2(x)
@@ -86,12 +86,12 @@ Next, we define our observed linear that we will swap our `torch.nn.Linear` with
            super().__init__(in_features, out_features, bias, device, dtype)
            self.act_obs = act_obs
            self.weight_obs = weight_obs
-   
+
        def forward(self, input: torch.Tensor):
            observed_input = self.act_obs(input)
            observed_weight = self.weight_obs(self.weight)
            return F.linear(observed_input, observed_weight, self.bias)
-   
+
        @classmethod
        def from_float(cls, float_linear, act_obs, weight_obs):
            observed_linear = cls(
@@ -166,7 +166,7 @@ There are multiple ways to actually quantize the model. Here we walk through the
            self.qweight = to_affine_quantized_intx_static(
                weight, weight_scale, weight_zero_point, block_size, self.target_dtype
            )
-   
+
        def forward(self, input: torch.Tensor):
            block_size = input.shape
            qinput = to_affine_quantized_intx_static(
@@ -177,7 +177,7 @@ There are multiple ways to actually quantize the model. Here we walk through the
                self.target_dtype,
            )
            return F.linear(qinput, self.qweight, self.bias)
-   
+
        @classmethod
        def from_observed(cls, observed_linear, target_dtype):
            quantized_linear = cls(
@@ -202,11 +202,11 @@ This linear class computes the scales and zero points for both input activations
    from torchao.quantization.transform_module import (
        register_quantize_module_handler,
    )
-   
+
    @dataclass
    class StaticQuantConfig(AOBaseConfig):
        target_dtype: torch.dtype
-   
+
    @register_quantize_module_handler(StaticQuantConfig)
    def _apply_static_quant(
        module: torch.nn.Module,

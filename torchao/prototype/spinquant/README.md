@@ -10,7 +10,7 @@ For optimal performance on CUDA GPUs, install the Fast Hadamard Transform packag
 pip install git+https://github.com/Dao-AILab/fast-hadamard-transform.git
 ```
 
-## Performance 
+## Performance
 
 See https://github.com/pytorch/ao/pull/983 for Wikitext benchmark results.
 

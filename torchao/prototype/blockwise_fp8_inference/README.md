@@ -30,7 +30,7 @@ For detailed motivations and technical specifications, please refer to the origi
 
 ## Benchmarks
 
-Below are performance benchmarks measuring FP8 blockwise GEMM latency against fp16 on a single H100 GPU. 
+Below are performance benchmarks measuring FP8 blockwise GEMM latency against fp16 on a single H100 GPU.
 These benchmarks can be reproduced using this [benchmarking script](https://github.com/pytorch/ao/blob/main/benchmarks/benchmark_blockwise_scaled_linear_triton.py).
 
 |    m |     k |     n |   block_size | dtype               |   fp16_latency (ms) |   blockwise_latency (ms) |   blockwise_speedup |
@@ -147,4 +147,3 @@ These benchmarks can be reproduced using this [benchmarking script](https://gith
 | 8192 |  8192 | 10240 |          128 | torch.float8_e5m2   |            2296.66  |                 2523.1   |            0.91025  |
 | 8192 |  8192 | 57344 |          128 | torch.float8_e5m2   |           13170.9   |                14029.6   |            0.938792 |
 | 8192 | 28672 |  8192 |          128 | torch.float8_e5m2   |            6688.51  |                 6699.65  |            0.998338 |
-

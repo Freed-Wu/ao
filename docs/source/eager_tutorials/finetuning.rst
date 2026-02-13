@@ -76,7 +76,7 @@ is optional:
 
   # Fine-tuning with QAT, by default:
   #   activations are fake quantized to asymmetric per token int8
-  #   weights are fake quantized to symmetric per group int4 
+  #   weights are fake quantized to symmetric per group int4
   #   configurable through "quantizer._component_" in the command
   tune run --nnodes 1 --nproc_per_node 4 qat_distributed --config llama3_2/3B_qat_full batch_size=16
 
@@ -381,7 +381,7 @@ for fine-tuning Llama3.2-3B in float8:
   fp8_tensorwise          7222.198 (+11.074%)   30.010 (-0.266%)
   fp8_rowwise             6387.968 (-1.756%)    29.158 (-3.096%)
   fp8_rowwise_with_gw_hp  7573.698 (+16.480%)   29.516 (-1.908%)
-  
+
   experiment_name         hellaswag_acc    wikitext_word_perplexity
   ----------------------  ---------------  --------------------------
   bf16                    0.533 (+0.000)   12.407 (+0.000)

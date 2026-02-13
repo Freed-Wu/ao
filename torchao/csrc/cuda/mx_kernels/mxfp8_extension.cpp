@@ -13,9 +13,9 @@ void mxfp8_quantize_cuda(const at::Tensor &input,
                          at::Tensor &output_rowwise,
                          at::Tensor &output_columnwise,
                          at::Tensor &scales_rowwise,
-                         at::Tensor &scales_colwise, 
+                         at::Tensor &scales_colwise,
                          int64_t scale_dim_x,
-                         int64_t scale_dim_y, 
+                         int64_t scale_dim_y,
                          const std::string &fp8_format,
                          const std::string &scaling_mode);
 
@@ -123,7 +123,7 @@ mxfp8_quantize(const at::Tensor& input, bool rowwise, bool colwise,
   if (colwise) {
     const int64_t num_row_blocks = (rows + scale_dim_y - 1) / scale_dim_y;
     output_colwise = at::empty_strided({rows, cols}, {1, rows}, options_fp8);
-    // Need scales_colwise to be this shape so the 'col' dim stride is 1, 
+    // Need scales_colwise to be this shape so the 'col' dim stride is 1,
     // for colwise scaling, we can avoid uncoalesced writes to global memory.
     // This is because each of the 32 threads in a warp will be computing
     // a scale for a different column of 32 input data values, then each writing
@@ -136,8 +136,8 @@ mxfp8_quantize(const at::Tensor& input, bool rowwise, bool colwise,
   }
 
   // Call CUDA kernels
-  mxfp8_quantize_cuda(input, 
-                      output_rowwise, output_colwise, 
+  mxfp8_quantize_cuda(input,
+                      output_rowwise, output_colwise,
                       scales_rowwise, scales_colwise,
                       rowwise ? scale_dim_x : 1, // scale_dim_x
                       colwise ? scale_dim_y : 1, // scale_dim_y
@@ -262,7 +262,7 @@ at::Tensor mx_block_rearrange_2d_M_groups(
   uint8_t* output_ptr = reinterpret_cast<uint8_t*>(output.data_ptr());
 
   // pipelined kernel will be used if input meets 2d TMA constraint (cols >= 16 and cols % 16 bytes == 0)
-  // Otherwise, a fallback kernel will be used (slightly slower but supports any column count)  
+  // Otherwise, a fallback kernel will be used (slightly slower but supports any column count)
   const bool can_use_pipelined_kernel = cols >= 16 && cols % 16 == 0;
   if (can_use_pipelined_kernel)
   {
@@ -280,7 +280,7 @@ at::Tensor mx_block_rearrange_2d_M_groups(
         static_cast<int>(chunks_per_tb),
         at::cuda::getCurrentCUDAStream());
   }
-  else 
+  else
   {
     // Launch simplified kernel (no TMA, works with any column dimension)
     launch_mx_block_rearrange_2d_simple_cuda(

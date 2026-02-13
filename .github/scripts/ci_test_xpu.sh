@@ -1,3 +1,9 @@
+# Copyright (c) Meta Platforms, Inc. and affiliates.
+# All rights reserved.
+#
+# This source code is licensed under the BSD 3-Clause license found in the
+# LICENSE file in the root directory of this source tree.
+
 #!/bin/bash
 
 conda create -yn xpu_ao_ci python=3.10
@@ -7,7 +13,7 @@ export CC=/usr/bin/gcc
 export CXX=/usr/bin/g++
 export SCCACHE_DISABLE=1
 
-python3 -m pip install torch torchvision torchaudio pytorch-triton-xpu --index-url https://download.pytorch.org/whl/nightly/xpu --force-reinstall --no-cache-dir 
+python3 -m pip install torch torchvision torchaudio pytorch-triton-xpu --index-url https://download.pytorch.org/whl/nightly/xpu --force-reinstall --no-cache-dir
 cd torchao && pip install . --no-build-isolation && cd ..
 
 python3 -c "import torch; import torchao; print(f'Torch version: {torch.__version__}')"

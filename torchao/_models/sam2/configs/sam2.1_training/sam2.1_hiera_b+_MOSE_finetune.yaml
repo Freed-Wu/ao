@@ -192,12 +192,12 @@ trainer:
     rand_init_cond_frames_for_train: True  # random 1~2
     num_correction_pt_per_frame: 7
     use_act_ckpt_iterative_pt_sampling: false
-    
 
-    
+
+
     num_init_cond_frames_for_eval: 1  # only mask on the first frame
     forward_backbone_per_frame_for_eval: True
-    
+
 
   data:
     train:
@@ -336,4 +336,3 @@ submitit:
   timeout_hour: 24
   name: null
   port_range: [10000, 65000]
-
